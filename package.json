@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "wac-school",
+=======
+  "name": "wac-project",
+>>>>>>> 2b45f14fc81edc9f2e6340fc15c28e4dda4df113
   "version": "0.0.1",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
