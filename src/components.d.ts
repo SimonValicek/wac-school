@@ -7,6 +7,8 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface XvaliceksWacSchoolWlApp {
+        "ambulanceId": string;
+        "apiBase": string;
         /**
           * @default ''
          */
@@ -16,6 +18,8 @@ export namespace Components {
         "entryId": string;
     }
     interface XvaliceksWacSchoolWlList {
+        "ambulanceId": string;
+        "apiBase": string;
     }
 }
 export interface XvaliceksWacSchoolWlEditorCustomEvent<T> extends CustomEvent<T> {
@@ -75,6 +79,8 @@ declare global {
 }
 declare namespace LocalJSX {
     interface XvaliceksWacSchoolWlApp {
+        "ambulanceId": string;
+        "apiBase": string;
         /**
           * @default ''
          */
@@ -85,6 +91,8 @@ declare namespace LocalJSX {
         "onEditor-closed"?: (event: XvaliceksWacSchoolWlEditorCustomEvent<string>) => void;
     }
     interface XvaliceksWacSchoolWlList {
+        "ambulanceId": string;
+        "apiBase": string;
         "onEntry-clicked"?: (event: XvaliceksWacSchoolWlListCustomEvent<string>) => void;
     }
     interface IntrinsicElements {

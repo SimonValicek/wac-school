@@ -12,56 +12,60 @@ declare global {
   shadow: true,
 })
 export class XvaliceksWacSchoolWlApp {
-  @State() private relativePath = '';
   @Prop() basePath: string = '';
+  @Prop() apiBase!: string;
+  @Prop() ambulanceId!: string;
+  @State() private relativePath = '';
 
   componentWillLoad() {
     const baseUri = new URL(this.basePath, document.baseURI || '/').pathname;
 
     const toRelative = (path: string) => {
-      if (path.startsWith(baseUri)) {
-        this.relativePath = path.slice(baseUri.length);
-      } else {
-        this.relativePath = '';
-      }
+      this.relativePath = path.startsWith(baseUri)
+        ? path.slice(baseUri.length)
+        : '';
     };
 
-    window.navigation?.addEventListener('navigate', (ev: Event) => {
-      if ((ev as any).canIntercept) {
-        (ev as any).intercept();
-      }
-      const path = new URL((ev as any).destination.url).pathname;
+    window.navigation?.addEventListener('navigate', (ev: any) => {
+      if (ev.canIntercept) ev.intercept();
+      const path = new URL(ev.destination.url).pathname;
       toRelative(path);
     });
 
     toRelative(location.pathname);
   }
 
+  private navigateTo(path: string) {
+    const absolute = new URL(path, new URL(this.basePath, document.baseURI))
+      .pathname;
+    window.navigation.navigate(absolute);
+  }
+
   render() {
-    let element = 'list';
+    // ←—— here we restore view + entryId
+    let view: 'list' | 'editor' = 'list';
     let entryId = '@new';
 
     if (this.relativePath.startsWith('entry/')) {
-      element = 'editor';
+      view = 'editor';
       entryId = this.relativePath.split('/')[1];
     }
 
-    const navigate = (path: string) => {
-      const absolute = new URL(path, new URL(this.basePath, document.baseURI)).pathname;
-      window.navigation.navigate(absolute);
-    };
-
     return (
       <Host>
-        {element === 'editor' ? (
+        {view === 'editor' ? (
           <xvaliceks-wac-school-wl-editor
             entry-id={entryId}
-            oneditor-closed={() => navigate('./list')}
-          ></xvaliceks-wac-school-wl-editor>
+            oneditor-closed={() => this.navigateTo('./list')}
+          />
         ) : (
           <xvaliceks-wac-school-wl-list
-            onentry-clicked={(ev: CustomEvent<string>) => navigate('./entry/' + ev.detail)}
-          ></xvaliceks-wac-school-wl-list>
+            apiBase={this.apiBase}
+            ambulanceId={this.ambulanceId}
+            onEntry-clicked={(ev: CustomEvent<string>) =>
+              this.navigateTo(`./entry/${ev.detail}`)
+            }
+          />
         )}
       </Host>
     );

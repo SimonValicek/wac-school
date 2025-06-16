@@ -1,4 +1,17 @@
-import { Component, Event, EventEmitter, h, Host, State } from '@stencil/core';
+import {
+  Component,
+  Prop,
+  State,
+  Event,
+  EventEmitter,
+  h,
+  Host
+} from '@stencil/core';
+import {
+  AmbulanceWaitingListApi,
+  WaitingListEntry,
+  Configuration
+} from '../../api/waiting-list';
 
 @Component({
   tag: 'xvaliceks-wac-school-wl-list',
@@ -6,34 +19,30 @@ import { Component, Event, EventEmitter, h, Host, State } from '@stencil/core';
   shadow: true,
 })
 export class XvaliceksWacSchoolWlList {
-  @State() waitingPatients: any[] = [];
+  @Prop() apiBase!: string;
+  @Prop() ambulanceId!: string;
 
-  @Event({ eventName: 'entry-clicked' }) entryClicked: EventEmitter<string>;
+  @State() errorMessage: string;
+  @State() waitingPatients: WaitingListEntry[] = [];
 
-  private async getWaitingPatientsAsync() {
-    return await Promise.resolve([
-      {
-        name: 'Jožko Púčik',
-        patientId: '10001',
-        estimatedStart: new Date(Date.now() + 65 * 60 * 1000),
-        estimatedDurationMinutes: 15,
-        condition: 'Kontrola',
-      },
-      {
-        name: 'Bc. August Cézar',
-        patientId: '10096',
-        estimatedStart: new Date(Date.now() + 30 * 60 * 1000),
-        estimatedDurationMinutes: 20,
-        condition: 'Teploty',
-      },
-      {
-        name: 'Ing. Ferdinand Trety',
-        patientId: '10028',
-        estimatedStart: new Date(Date.now() + 5 * 60 * 1000),
-        estimatedDurationMinutes: 15,
-        condition: 'Bolesti hrdla',
-      },
-    ]);
+  @Event({ eventName: 'entry-clicked' })
+  entryClicked!: EventEmitter<string>;
+
+  private async getWaitingPatientsAsync(): Promise<WaitingListEntry[]> {
+    try {
+      const config = new Configuration({ basePath: this.apiBase });
+      const api = new AmbulanceWaitingListApi(config);
+      const resp = await api.getWaitingListEntriesRaw({
+        ambulanceId: this.ambulanceId
+      });
+      if (resp.raw.status < 300) {
+        return await resp.value();
+      }
+      this.errorMessage = `Cannot retrieve list: ${resp.raw.statusText}`;
+    } catch (err: any) {
+      this.errorMessage = `Cannot retrieve list: ${err.message || 'unknown'}`;
+    }
+    return [];
   }
 
   async componentWillLoad() {
@@ -43,17 +52,22 @@ export class XvaliceksWacSchoolWlList {
   render() {
     return (
       <Host>
-        <md-list>
-          {this.waitingPatients.map((patient, index) => (
-            <md-list-item onClick={() => this.entryClicked.emit(index.toString())}>
-              <div slot="headline">{patient.name}</div>
-              <div slot="supporting-text">
-                {'Predpokladaný vstup: ' + patient.estimatedStart?.toLocaleString()}
-              </div>
-              <md-icon slot="start">person</md-icon>
-            </md-list-item>
-          ))}
-        </md-list>
+        {this.errorMessage ? (
+          <div class="error">{this.errorMessage}</div>
+        ) : (
+          <md-list>
+            {this.waitingPatients.map(p => (
+              <md-list-item onClick={() => this.entryClicked.emit(p.id!)}>
+                <div slot="headline">{p.name}</div>
+                <div slot="supporting-text">
+                  Predpokladaný vstup:{' '}
+                  {new Date(p.estimatedStart!).toLocaleString()}
+                </div>
+                <md-icon slot="start">person</md-icon>
+              </md-list-item>
+            ))}
+          </md-list>
+        )}
       </Host>
     );
   }
