@@ -73,7 +73,7 @@ export class XvaliceksWacSchoolWlList {
         class="add-button"
         onClick={() => this.entryClicked.emit('@new')}
       >
-        <md-icon>add</md-icon>
+        <md-icon>pridať</md-icon>
       </md-filled-icon-button>
     </Host>
   );
