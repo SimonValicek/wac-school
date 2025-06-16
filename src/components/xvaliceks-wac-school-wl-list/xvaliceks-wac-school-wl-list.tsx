@@ -1,37 +1,38 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Event, EventEmitter, h, Host, State } from '@stencil/core';
 
 @Component({
-  tag: 'sv-ambulance-wl-list',
-  styleUrl: 'sv-ambulance-wl-list.css',
+  tag: 'xvaliceks-wac-school-wl-list',
+  styleUrl: 'xvaliceks-wac-school-wl-list.css',
   shadow: true,
 })
-export class SvAmbulanceWlList {
+export class XvaliceksWacSchoolWlList {
+  @State() waitingPatients: any[] = [];
 
-  waitingPatients: any[];
+  @Event({ eventName: 'entry-clicked' }) entryClicked: EventEmitter<string>;
 
   private async getWaitingPatientsAsync() {
     return await Promise.resolve([
       {
         name: 'Jožko Púčik',
         patientId: '10001',
-        estimatedStart: new Date(Date.now() + 65 * 60),
+        estimatedStart: new Date(Date.now() + 65 * 60 * 1000),
         estimatedDurationMinutes: 15,
-        condition: 'Kontrola'
+        condition: 'Kontrola',
       },
       {
         name: 'Bc. August Cézar',
         patientId: '10096',
-        estimatedStart: new Date(Date.now() + 30 * 60),
+        estimatedStart: new Date(Date.now() + 30 * 60 * 1000),
         estimatedDurationMinutes: 20,
-        condition: 'Teploty'
+        condition: 'Teploty',
       },
       {
         name: 'Ing. Ferdinand Trety',
         patientId: '10028',
-        estimatedStart: new Date(Date.now() + 5 * 60),
+        estimatedStart: new Date(Date.now() + 5 * 60 * 1000),
         estimatedDurationMinutes: 15,
-        condition: 'Bolesti hrdla'
-      }
+        condition: 'Bolesti hrdla',
+      },
     ]);
   }
 
@@ -42,17 +43,16 @@ export class SvAmbulanceWlList {
   render() {
     return (
       <Host>
-        <slot></slot>
         <md-list>
-          {this.waitingPatients.map(patient =>
-            <md-list-item>
+          {this.waitingPatients.map((patient, index) => (
+            <md-list-item onClick={() => this.entryClicked.emit(index.toString())}>
               <div slot="headline">{patient.name}</div>
               <div slot="supporting-text">
-                {"Predpokladaný vstup: " + patient.estimatedStart?.toLocaleString()}
+                {'Predpokladaný vstup: ' + patient.estimatedStart?.toLocaleString()}
               </div>
               <md-icon slot="start">person</md-icon>
             </md-list-item>
-          )}
+          ))}
         </md-list>
       </Host>
     );

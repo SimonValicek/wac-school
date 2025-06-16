@@ -6,32 +6,100 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface SvAmbulanceWlList {
+    interface XvaliceksWacSchoolWlApp {
+        /**
+          * @default ''
+         */
+        "basePath": string;
+    }
+    interface XvaliceksWacSchoolWlEditor {
+        "entryId": string;
+    }
+    interface XvaliceksWacSchoolWlList {
     }
 }
+export interface XvaliceksWacSchoolWlEditorCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLXvaliceksWacSchoolWlEditorElement;
+}
+export interface XvaliceksWacSchoolWlListCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLXvaliceksWacSchoolWlListElement;
+}
 declare global {
-    interface HTMLSvAmbulanceWlListElement extends Components.SvAmbulanceWlList, HTMLStencilElement {
+    interface HTMLXvaliceksWacSchoolWlAppElement extends Components.XvaliceksWacSchoolWlApp, HTMLStencilElement {
     }
-    var HTMLSvAmbulanceWlListElement: {
-        prototype: HTMLSvAmbulanceWlListElement;
-        new (): HTMLSvAmbulanceWlListElement;
+    var HTMLXvaliceksWacSchoolWlAppElement: {
+        prototype: HTMLXvaliceksWacSchoolWlAppElement;
+        new (): HTMLXvaliceksWacSchoolWlAppElement;
+    };
+    interface HTMLXvaliceksWacSchoolWlEditorElementEventMap {
+        "editor-closed": string;
+    }
+    interface HTMLXvaliceksWacSchoolWlEditorElement extends Components.XvaliceksWacSchoolWlEditor, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLXvaliceksWacSchoolWlEditorElementEventMap>(type: K, listener: (this: HTMLXvaliceksWacSchoolWlEditorElement, ev: XvaliceksWacSchoolWlEditorCustomEvent<HTMLXvaliceksWacSchoolWlEditorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLXvaliceksWacSchoolWlEditorElementEventMap>(type: K, listener: (this: HTMLXvaliceksWacSchoolWlEditorElement, ev: XvaliceksWacSchoolWlEditorCustomEvent<HTMLXvaliceksWacSchoolWlEditorElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLXvaliceksWacSchoolWlEditorElement: {
+        prototype: HTMLXvaliceksWacSchoolWlEditorElement;
+        new (): HTMLXvaliceksWacSchoolWlEditorElement;
+    };
+    interface HTMLXvaliceksWacSchoolWlListElementEventMap {
+        "entry-clicked": string;
+    }
+    interface HTMLXvaliceksWacSchoolWlListElement extends Components.XvaliceksWacSchoolWlList, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLXvaliceksWacSchoolWlListElementEventMap>(type: K, listener: (this: HTMLXvaliceksWacSchoolWlListElement, ev: XvaliceksWacSchoolWlListCustomEvent<HTMLXvaliceksWacSchoolWlListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLXvaliceksWacSchoolWlListElementEventMap>(type: K, listener: (this: HTMLXvaliceksWacSchoolWlListElement, ev: XvaliceksWacSchoolWlListCustomEvent<HTMLXvaliceksWacSchoolWlListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLXvaliceksWacSchoolWlListElement: {
+        prototype: HTMLXvaliceksWacSchoolWlListElement;
+        new (): HTMLXvaliceksWacSchoolWlListElement;
     };
     interface HTMLElementTagNameMap {
-        "sv-ambulance-wl-list": HTMLSvAmbulanceWlListElement;
+        "xvaliceks-wac-school-wl-app": HTMLXvaliceksWacSchoolWlAppElement;
+        "xvaliceks-wac-school-wl-editor": HTMLXvaliceksWacSchoolWlEditorElement;
+        "xvaliceks-wac-school-wl-list": HTMLXvaliceksWacSchoolWlListElement;
     }
 }
 declare namespace LocalJSX {
-    interface SvAmbulanceWlList {
+    interface XvaliceksWacSchoolWlApp {
+        /**
+          * @default ''
+         */
+        "basePath"?: string;
+    }
+    interface XvaliceksWacSchoolWlEditor {
+        "entryId"?: string;
+        "onEditor-closed"?: (event: XvaliceksWacSchoolWlEditorCustomEvent<string>) => void;
+    }
+    interface XvaliceksWacSchoolWlList {
+        "onEntry-clicked"?: (event: XvaliceksWacSchoolWlListCustomEvent<string>) => void;
     }
     interface IntrinsicElements {
-        "sv-ambulance-wl-list": SvAmbulanceWlList;
+        "xvaliceks-wac-school-wl-app": XvaliceksWacSchoolWlApp;
+        "xvaliceks-wac-school-wl-editor": XvaliceksWacSchoolWlEditor;
+        "xvaliceks-wac-school-wl-list": XvaliceksWacSchoolWlList;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "sv-ambulance-wl-list": LocalJSX.SvAmbulanceWlList & JSXBase.HTMLAttributes<HTMLSvAmbulanceWlListElement>;
+            "xvaliceks-wac-school-wl-app": LocalJSX.XvaliceksWacSchoolWlApp & JSXBase.HTMLAttributes<HTMLXvaliceksWacSchoolWlAppElement>;
+            "xvaliceks-wac-school-wl-editor": LocalJSX.XvaliceksWacSchoolWlEditor & JSXBase.HTMLAttributes<HTMLXvaliceksWacSchoolWlEditorElement>;
+            "xvaliceks-wac-school-wl-list": LocalJSX.XvaliceksWacSchoolWlList & JSXBase.HTMLAttributes<HTMLXvaliceksWacSchoolWlListElement>;
         }
     }
 }
