@@ -55,10 +55,12 @@ export class XvaliceksWacSchoolWlApp {
       <Host>
         {view === 'editor' ? (
           <xvaliceks-wac-school-wl-editor
-            entry-id={entryId}
+            entryId={entryId}
+            ambulanceId={this.ambulanceId}
+            apiBase={this.apiBase}
             oneditor-closed={() => this.navigateTo('./list')}
-          />
-        ) : (
+  />
+) : (
           <xvaliceks-wac-school-wl-list
             apiBase={this.apiBase}
             ambulanceId={this.ambulanceId}

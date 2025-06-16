@@ -50,25 +50,33 @@ export class XvaliceksWacSchoolWlList {
   }
 
   render() {
-    return (
-      <Host>
-        {this.errorMessage ? (
-          <div class="error">{this.errorMessage}</div>
-        ) : (
-          <md-list>
-            {this.waitingPatients.map(p => (
-              <md-list-item onClick={() => this.entryClicked.emit(p.id!)}>
-                <div slot="headline">{p.name}</div>
-                <div slot="supporting-text">
-                  Predpokladaný vstup:{' '}
-                  {new Date(p.estimatedStart!).toLocaleString()}
-                </div>
-                <md-icon slot="start">person</md-icon>
-              </md-list-item>
-            ))}
-          </md-list>
-        )}
-      </Host>
-    );
-  }
+  return (
+    <Host>
+      {this.errorMessage ? (
+        <div class="error">{this.errorMessage}</div>
+      ) : (
+        <md-list>
+          {this.waitingPatients.map(p => (
+            <md-list-item onClick={() => this.entryClicked.emit(p.id!)}>
+              <div slot="headline">{p.name}</div>
+              <div slot="supporting-text">
+                Predpokladaný vstup: {new Date(p.estimatedStart!).toLocaleString()}
+              </div>
+              <md-icon slot="start">person</md-icon>
+            </md-list-item>
+          ))}
+        </md-list>
+      )}
+
+      {/* Floating “+” button to create a new entry */}
+      <md-filled-icon-button
+        class="add-button"
+        onClick={() => this.entryClicked.emit('@new')}
+      >
+        <md-icon>add</md-icon>
+      </md-filled-icon-button>
+    </Host>
+  );
+}
+
 }

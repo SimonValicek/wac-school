@@ -15,6 +15,8 @@ export namespace Components {
         "basePath": string;
     }
     interface XvaliceksWacSchoolWlEditor {
+        "ambulanceId": string;
+        "apiBase": string;
         "entryId": string;
     }
     interface XvaliceksWacSchoolWlList {
@@ -38,7 +40,7 @@ declare global {
         new (): HTMLXvaliceksWacSchoolWlAppElement;
     };
     interface HTMLXvaliceksWacSchoolWlEditorElementEventMap {
-        "editor-closed": string;
+        "editor-closed": 'store' | 'delete' | 'cancel';
     }
     interface HTMLXvaliceksWacSchoolWlEditorElement extends Components.XvaliceksWacSchoolWlEditor, HTMLStencilElement {
         addEventListener<K extends keyof HTMLXvaliceksWacSchoolWlEditorElementEventMap>(type: K, listener: (this: HTMLXvaliceksWacSchoolWlEditorElement, ev: XvaliceksWacSchoolWlEditorCustomEvent<HTMLXvaliceksWacSchoolWlEditorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -87,8 +89,10 @@ declare namespace LocalJSX {
         "basePath"?: string;
     }
     interface XvaliceksWacSchoolWlEditor {
-        "entryId"?: string;
-        "onEditor-closed"?: (event: XvaliceksWacSchoolWlEditorCustomEvent<string>) => void;
+        "ambulanceId": string;
+        "apiBase": string;
+        "entryId": string;
+        "onEditor-closed"?: (event: XvaliceksWacSchoolWlEditorCustomEvent<'store' | 'delete' | 'cancel'>) => void;
     }
     interface XvaliceksWacSchoolWlList {
         "ambulanceId": string;

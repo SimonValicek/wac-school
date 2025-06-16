@@ -14,6 +14,8 @@ info:
 tags:
   - name: ambulanceWaitingList
     description: Ambulance Waiting List API
+  - name: ambulanceConditions
+    description: Patient conditions and symptoms handled in the ambulance
 
 paths:
   "/waiting-list/{ambulanceId}/entries":
@@ -44,6 +46,167 @@ paths:
                   $ref: "#/components/examples/WaitingListEntriesExample"
         "404":
           description: Ambulance with such ID does not exist
+    post:
+      tags:
+        - ambulanceWaitingList
+      summary: Saves new entry into waiting list
+      operationId: createWaitingListEntry
+      description: Use this to store a new entry into the waiting list.
+      parameters:
+        - in: path
+          name: ambulanceId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WaitingListEntry"
+            examples:
+              request:
+                $ref: "#/components/examples/WaitingListEntryExample"
+      responses:
+        "200":
+          description: Created entry with estimated times
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitingListEntry"
+              examples:
+                response:
+                  $ref: "#/components/examples/WaitingListEntryExample"
+        "400":
+          description: Missing mandatory properties
+        "404":
+          description: Ambulance not found
+        "409":
+          description: Entry with that ID already exists
+
+  "/waiting-list/{ambulanceId}/entries/{entryId}":
+    get:
+      tags:
+        - ambulanceWaitingList
+      summary: Provides details about a single waiting list entry
+      operationId: getWaitingListEntry
+      description: By using ambulanceId and entryId you retrieve the details of one entry.
+      parameters:
+        - in: path
+          name: ambulanceId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: entryId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: One WaitingListEntry object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitingListEntry"
+              examples:
+                response:
+                  $ref: "#/components/examples/WaitingListEntryExample"
+        "404":
+          description: Ambulance or Entry with such ID not found
+
+    put:
+      tags:
+        - ambulanceWaitingList
+      summary: Updates a specific waiting list entry
+      operationId: updateWaitingListEntry
+      description: Use this to update the content of one waiting list entry.
+      parameters:
+        - in: path
+          name: ambulanceId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: entryId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Waiting list entry to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WaitingListEntry"
+            examples:
+              request:
+                $ref: "#/components/examples/WaitingListEntryExample"
+      responses:
+        "200":
+          description: Updated WaitingListEntry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitingListEntry"
+              examples:
+                response:
+                  $ref: "#/components/examples/WaitingListEntryExample"
+        "403":
+          description: ID in path and payload mismatch
+        "404":
+          description: Ambulance or Entry with such ID not found
+
+    delete:
+      tags:
+        - ambulanceWaitingList
+      summary: Deletes a specific waiting list entry
+      operationId: deleteWaitingListEntry
+      description: Use this to remove an entry from the waiting list.
+      parameters:
+        - in: path
+          name: ambulanceId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: entryId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Entry deleted successfully
+        "404":
+          description: Ambulance or Entry with such ID not found
+
+  "/waiting-list/{ambulanceId}/condition":
+    get:
+      tags:
+        - ambulanceConditions
+      summary: Provides the list of conditions for this ambulance
+      operationId: getConditions
+      description: Get predefined patient conditions for an ambulance.
+      parameters:
+        - in: path
+          name: ambulanceId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of Condition
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Condition"
+              examples:
+                response:
+                  $ref: "#/components/examples/ConditionsListExample"
+        "404":
+          description: Ambulance not found
 
 components:
   schemas:
@@ -109,7 +272,7 @@ components:
         $ref: "#/components/examples/ConditionExample"
 
   examples:
-    WaitingListEntryExample: 
+    WaitingListEntryExample:
       summary: Ľudomír Zlostný waiting
       description: |
         Entry represents a patient waiting in the ambulance prep room with
@@ -128,15 +291,15 @@ components:
 
     ConditionExample:
       summary: Conditions and symptoms
-      description: list of few symptoms that can be chosen by patients
-      value: 
-        valuee: Teploty
+      description: List of a few symptoms that can be chosen by patients
+      value:
+        value: Teploty
         code: subfebrilia
-        reference: >-
-          https://zdravoteka.sk/priznaky/zvysena-telesna-teplota/
+        reference: "https://zdravoteka.sk/priznaky/zvysena-telesna-teplota/"
+        typicalDurationMinutes: 20
 
     WaitingListEntriesExample:
-      summary: List of waiting patients 
+      summary: List of waiting patients
       description: |
         Example waiting list containing 2 patients
       value:
@@ -160,3 +323,25 @@ components:
             value: Nevoľnosť
             code: nausea
             reference: "https://zdravoteka.sk/priznaky/nevolnost/"
+
+    ConditionsListExample:
+      summary: Sample list of ambulance conditions
+      description: Example of possible patient conditions for a given ambulance
+      value:
+        - value: Teploty
+          code: subfebrilia
+          reference: "https://zdravoteka.sk/priznaky/zvysena-telesna-teploty/"
+          typicalDurationMinutes: 20
+        - value: Nevoľnosť
+          code: nausea
+          reference: "https://zdravoteka.sk/priznaky/nevolnost/"
+          typicalDurationMinutes: 45
+        - value: Kontrola
+          code: followup
+          typicalDurationMinutes: 15
+        - value: Administratívny úkon
+          code: administration
+          typicalDurationMinutes: 10
+        - value: Odber krvi
+          code: blood-test
+          typicalDurationMinutes: 10

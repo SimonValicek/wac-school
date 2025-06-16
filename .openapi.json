@@ -68,6 +68,153 @@
           }
         }
       }
+    },
+    "/waiting-list/{ambulanceId}/entries/{entryId}": {
+      "get": {
+        "tags": [
+          "ambulanceWaitingList"
+        ],
+        "summary": "Provides details about a single waiting list entry",
+        "operationId": "getWaitingListEntry",
+        "description": "By using ambulanceId and entryId you retrieve the details of one entry.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ambulanceId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entryId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One WaitingListEntry object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaitingListEntry"
+                },
+                "examples": {
+                  "response": {
+                    "$ref": "#/components/examples/WaitingListEntryExample"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ambulance or Entry with such ID not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ambulanceWaitingList"
+        ],
+        "summary": "Updates a specific waiting list entry",
+        "operationId": "updateWaitingListEntry",
+        "description": "Use this to update the content of one waiting list entry.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ambulanceId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entryId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Waiting list entry to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaitingListEntry"
+              },
+              "examples": {
+                "request": {
+                  "$ref": "#/components/examples/WaitingListEntryExample"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated WaitingListEntry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaitingListEntry"
+                },
+                "examples": {
+                  "response": {
+                    "$ref": "#/components/examples/WaitingListEntryExample"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "ID in path and payload mismatch"
+          },
+          "404": {
+            "description": "Ambulance or Entry with such ID not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ambulanceWaitingList"
+        ],
+        "summary": "Deletes a specific waiting list entry",
+        "operationId": "deleteWaitingListEntry",
+        "description": "Use this to remove an entry from the waiting list.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ambulanceId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "entryId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Entry deleted successfully"
+          },
+          "404": {
+            "description": "Ambulance or Entry with such ID not found"
+          }
+        }
+      }
     }
   },
   "components": {
